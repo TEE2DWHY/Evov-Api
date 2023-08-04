@@ -14,15 +14,12 @@ app.use(errorHandler);
 
 const port = 3000;
 
-const start = () => {
-  app.listen(port, async () => {
-    try {
-      await connect(process.env.MONGO_URI);
-      console.log(`server is running on port: ${port}`);
-    } catch (err) {
-      console.log(err);
-    }
-  });
+const start = async () => {
+  try {
+    await connect(process.env.MONGO_URI);
+    app.listen(port, console.log(`server is running on port: ${port}`));
+  } catch (err) {
+    console.log(err);
+  }
 };
-
 start();
