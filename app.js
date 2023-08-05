@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
+const cors = require("cors");
 const user = require("./routers/user");
 const connect = require("./db/connect");
 const errorHandler = require("./middleware/errorHandler");
@@ -8,11 +9,12 @@ const notFound = require("./middleware/notFound");
 
 // middleware
 app.use(express.json());
+app.use(cors());
 app.use("/api/v1", user);
 app.use(notFound);
 app.use(errorHandler);
 
-const port = 3000;
+const port = process.env.PORT;
 
 const start = async () => {
   try {
