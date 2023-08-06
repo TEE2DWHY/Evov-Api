@@ -6,6 +6,10 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide email"],
     unique: true,
   },
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("user", UserSchema);
