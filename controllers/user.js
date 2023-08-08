@@ -1,5 +1,5 @@
 const asyncWrapper = require("../middleware/asyncWrapper");
-const User = require("../model/user");
+const User = require("../model/User");
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const { sendEmail, verifyEmailMessage } = require("../utils/email");
