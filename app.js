@@ -16,6 +16,7 @@ app.use(errorHandler);
 
 const port = process.env.PORT;
 
+// start connection to database
 const start = async () => {
   try {
     await connect(process.env.MONGO_URI);
@@ -24,4 +25,5 @@ const start = async () => {
     console.log(err);
   }
 };
+
 start();

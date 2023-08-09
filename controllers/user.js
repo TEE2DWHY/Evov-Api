@@ -32,7 +32,7 @@ const register = asyncWrapper(async (req, res) => {
 const verifyEmail = asyncWrapper(async (req, res) => {
   const { token } = req.query;
   if (!token) {
-    res.status(StatusCodes.BAD_REQUEST).json({
+    return res.status(StatusCodes.BAD_REQUEST).json({
       msg: `Token not found.`,
     });
   }
@@ -49,6 +49,8 @@ const verifyEmail = asyncWrapper(async (req, res) => {
         msg: "Invalid registration token",
       });
     }
+    const redirectUrl = "https://evov.pages.dev/pages/success.html";
+    res.redirect(redirectUrl);
     res.status(StatusCodes.OK).json({
       msg: `${email} is now verified`,
     });
