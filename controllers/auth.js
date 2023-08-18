@@ -2,7 +2,11 @@ const asyncWrapper = require("../middleware/asyncWrapper");
 const User = require("../model/User");
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
-const { sendEmail, verifyEmailMessage } = require("../utils/email");
+const {
+  sendEmail,
+  verifyEmailMessage,
+  resetPasswordMessage,
+} = require("../utils/email");
 const bcrypt = require("bcrypt");
 
 // register new user
@@ -87,10 +91,48 @@ const login = asyncWrapper(async (req, res) => {
   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_LIFETIME,
   });
+
+  const firstName = user.fullName.split(" ")[0];
+
   res.status(StatusCodes.OK).json({
     msg: `Login successful`,
     token: token,
+    firstName: firstName,
   });
 });
 
-module.exports = { register, verifyEmail, login };
+// verify user before password reset
+const verifyUser = asyncWrapper(async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      msg: `Please verify email`,
+    });
+  }
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return res.status(StatusCodes.NOT_FOUND).json({
+      msg: `User does not exist`,
+    });
+  }
+  const resetPasswordToken = jwt.sign(
+    { userId: user._id },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_LIFETIME,
+    }
+  );
+  await sendEmail({
+    email: email,
+    subject: "EVOV- RESET PASSWORD",
+    message: resetPasswordMessage(resetPasswordToken),
+  });
+  res.status(StatusCodes.OK).json({
+    msg: "Reset password email sent.",
+  });
+});
+
+// reset password
+const resetPassword = asyncWrapper(async (req, res) => {});
+
+module.exports = { register, verifyEmail, login, verifyUser };

@@ -55,4 +55,34 @@ const verifyEmailMessage = (verificationToken) => {
   `;
 };
 
-module.exports = { sendEmail, verifyEmailMessage };
+const resetPasswordMessage = (resetPasswordToken) => {
+  return `
+  <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            color: #333;
+          }
+          .container {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>OOPS... YOUR FORGOT YOUR PASSWORD. </h1>
+          <p>Do not fret..We've got you covered.
+          <br/> Click this link to reset your password <a href=${process.env.BASE_URL}/api/v1/reset-password?token=${resetPasswordToken}>Reset Password</a>. Thank you
+          </p>
+        </div>
+      </body>
+    </html>
+  `;
+};
+
+module.exports = { sendEmail, verifyEmailMessage, resetPasswordMessage };
