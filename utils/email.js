@@ -25,7 +25,7 @@ const sendEmail = (option) => {
   });
 };
 
-const verifyEmailMessage = (verificationToken) => {
+const verifyEmailMessage = (verificationToken, name) => {
   return `
   <!DOCTYPE html>
     <html>
@@ -38,16 +38,25 @@ const verifyEmailMessage = (verificationToken) => {
           .container {
             padding: 20px;
             border: 1px solid #ccc;
-            border-radius: 5px;
             background-color: #f9f9f9;
+          }
+          .link{
+            font-weight: 900
           }
         </style>
       </head>
       <body>
         <div class="container">
-          <h1>Welcome to  Evov </h1>
-          <p>We are focused on ensuring our users are well optimized with the skills needed to thrive in life.
-          <br/> Click this link to verify your email <a href=${process.env.BASE_URL}/api/v1/verify-email?token=${verificationToken}>Verify Email</a>. Thank you
+          <h2>Welcome on Board</h2>
+          <p>Hi ${name}</p>
+          <p>We are super excited to have you here. Trust me, we waited a long time to have you on board, and here you are.
+          <br/>
+          It's impressive that you've taken such a bold step to become a better version of yourself, we are glad to help you walk through this journey.
+          <span class="link">Kindly click this <a href=${process.env.BASE_URL}/api/v1/verify-email?token=${verificationToken}>link</a> to verify your account</span>
+          <br/>
+          Stay tuned for insightful newsletter and other pertinent updates.
+          <br/>
+          Cheers to Growth!
           </p>
         </div>
       </body>
