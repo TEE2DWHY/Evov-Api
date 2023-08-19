@@ -75,7 +75,7 @@ const resetPasswordMessage = (resetPasswordToken) => {
       </head>
       <body>
         <div class="container">
-          <h1>OOPS... YOUR FORGOT YOUR PASSWORD. </h1>
+          <h1>RESET YOUR PASSWORD. </h1>
           <p>Do not fret..We've got you covered.
           <br/> Click this link to reset your password <a href=${process.env.BASE_URL}/api/v1/reset-password?token=${resetPasswordToken}>Reset Password</a>. Thank you
           </p>

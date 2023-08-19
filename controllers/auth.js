@@ -101,12 +101,12 @@ const login = asyncWrapper(async (req, res) => {
   });
 });
 
-// verify user before password reset
-const verifyUser = asyncWrapper(async (req, res) => {
+// forgot password
+const forgotPassword = asyncWrapper(async (req, res) => {
   const { email } = req.body;
   if (!email) {
     return res.status(StatusCodes.BAD_REQUEST).json({
-      msg: `Please verify email`,
+      msg: `Please provide email`,
     });
   }
   const user = await User.findOne({ email: email });
@@ -133,6 +133,53 @@ const verifyUser = asyncWrapper(async (req, res) => {
 });
 
 // reset password
-const resetPassword = asyncWrapper(async (req, res) => {});
+const resetPassword = asyncWrapper(async (req, res) => {
+  const { newPassword, confirmPassword } = req.body;
+  const { token } = req.query;
+  try {
+    if (!token) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        msg: "Invalid Token",
+      });
+    }
+    if (newPassword !== confirmPassword) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        msg: "Password and confirm password does not match.",
+      });
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const decodeToken = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(decodeToken);
+    const userId = decodeToken.userId;
+    const user = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: { password: hashedPassword } },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        msg: "User not found.",
+      });
+    }
+    res.status(StatusCodes.OK).json({
+      msg: "Password reset is successful. Proceed to login.",
+    });
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        msg: "Invalid Token",
+      });
+    }
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      msg: "An error occurred with your request",
+    });
+  }
+});
 
-module.exports = { register, verifyEmail, login, verifyUser };
+module.exports = {
+  register,
+  verifyEmail,
+  login,
+  forgotPassword,
+  resetPassword,
+};
