@@ -26,12 +26,12 @@ const register = asyncWrapper(async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const newUser = await User.create({ ...req.body, password: hashedPassword });
+  const firstName = req.body.fullName.split(" ")[0];
   await sendEmail({
     email: req.body.email,
     subject: "VERIFY YOUR EMAIL - EVOV",
-    message: verifyEmailMessage(verificationToken),
+    message: verifyEmailMessage(verificationToken, firstName),
   });
-  const firstName = req.body.fullName.split(" ")[0];
   res.status(StatusCodes.CREATED).json({
     firstName: firstName,
     msg: "Account is created. Please check your email to verify.",

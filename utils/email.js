@@ -34,6 +34,7 @@ const verifyEmailMessage = (verificationToken, name) => {
           body {
             font-family: Arial, sans-serif;
             color: #333;
+            letter-spacing: 0.01rem;
           }
           .container {
             padding: 20px;
@@ -48,9 +49,8 @@ const verifyEmailMessage = (verificationToken, name) => {
       <body>
         <div class="container">
           <h2>Welcome on Board</h2>
-          <p>Hi ${name}</p>
+          <p>Hi ${name},</p>
           <p>We are super excited to have you here. Trust me, we waited a long time to have you on board, and here you are.
-          <br/>
           It's impressive that you've taken such a bold step to become a better version of yourself, we are glad to help you walk through this journey.
           <span class="link">Kindly click this <a href=${process.env.BASE_URL}/api/v1/verify-email?token=${verificationToken}>link</a> to verify your account</span>
           <br/>
