@@ -89,9 +89,9 @@ const resetPasswordMessage = (resetPasswordToken) => {
       </head>
       <body>
         <div class="container">
-          <h1>RESET YOUR PASSWORD. </h1>
+          <h1>RESET PASSWORD. </h1>
           <p>Do not fret..We've got you covered.
-          <br/> Click this link to reset your password <a href=${process.env.BASE_URL}/api/v1/reset-password?token=${resetPasswordToken}>Reset Password</a>. Thank you
+          <br/> Click this link to reset your password <a href=https://evov.pages.dev/pages/reset-password.html?token=${resetPasswordToken}>Reset Password</a>. Thank you
           </p>
         </div>
       </body>
